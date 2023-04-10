@@ -14,8 +14,8 @@ This script relies on a Foundry API token. [Generate a token](https://www.palant
 
 ```
 export $TOKEN=<your foundry token>
-export $HOSTNAME=<your hostname here>  # often in the form myHost.palantirfoundry.com
-export $ONTOLOGYRID=<your ontology rid here>
+export $HOSTNAME=<your hostname>  # often in the form something.palantirfoundry.com
+export $ONTOLOGYRID=<your ontology rid>
 ```
 
 Alternately, create a `.env` file and add your token there:
@@ -24,8 +24,8 @@ Alternately, create a `.env` file and add your token there:
 # ./.env
 
 TOKEN=<your foundry token>
-HOSTNAME=<your hostname here>
-ONTOLOGYRID=<your ontology rid here>
+HOSTNAME=<your hostname>
+ONTOLOGYRID=<your ontology rid>
 ```
 
 ## Use
