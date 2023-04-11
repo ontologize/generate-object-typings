@@ -73,12 +73,13 @@ for (const objectType of inputArgs.objectTypes) {
             respJson.apiName
           } ${inputArgs.type ? "= " : ""}`;
           const opening = `\n${interfaceOrType}{`;
+          const rid = "\n  rid?: string;";
           const closing = "\n}";
-          const properties = `${Object.entries(respJson.properties)
+          const properties = `\n  properties?: {${Object.entries(respJson.properties)
             .map(
               ([propertyApiName, property]: [string, ObjectTypeProperty]) => {
                 if (property.baseType) {
-                  const key = `\n  ${propertyApiName}`;
+                  const key = `\n    ${propertyApiName}`;
                   const isOptional = `${
                     respJson.primaryKey &&
                     respJson.primaryKey.includes(propertyApiName)
@@ -99,8 +100,8 @@ for (const objectType of inputArgs.objectTypes) {
                 }
               }
             )
-            .join("")}`;
-          return `${opening}${properties}${closing}`;
+            .join("")}\n  };`;
+          return `${opening}${rid}${properties}${closing}`;
         }
       })
       .then((typeDef) => console.log(typeDef));
