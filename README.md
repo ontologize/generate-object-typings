@@ -50,6 +50,7 @@ interface ObjectType1 {
 ```
 
 ### Options
+- If you want to extend a generic OntologyObject interface, add the `-e` or `--extendOntologyObject` option. This option is incompatible with the `-t` option and will be overriden by that option.
 - If you want types instead of interfaces, add the `-t` or `--types` option.
 - If you want the original object types included as comments, add the `-c` or `--commentOntologyType` option.
 - If you want to type date and timestamp fields as strings instead of `Date`, add the `-d` or `--dateAsString` option.

@@ -3,11 +3,12 @@ import yargs from "https://deno.land/x/yargs@v17.7.1-deno/deno.ts";
 import { typeMap, typeMapDateAsString } from "./typeMap.ts";
 
 interface Arguments {
-  type: string;
+  commentOntologyType: boolean;
+  dateAsString: boolean;
+  extendOntologyObject: boolean;
+  help: boolean;
   objectTypes: string[];
-  commentOntologyType: string;
-  dateAsString: string;
-  help: string;
+  type: boolean;
 }
 
 interface ObjectTypeProperty {
@@ -49,10 +50,24 @@ const inputArgs: Arguments = yargs(Deno.args)
     describe: "Type date and time properties as strings instead of Date",
     type: "boolean",
   })
+  .option("e", {
+    alias: "extendOntologyObject",
+    describe:
+      "Extends a generic OntologyObject interface. Incompatible with the -t option.",
+    type: "boolean",
+  })
   .help()
   .array("o").argv;
 
 const urlBase = `https://${hostname}/api/v1/ontologies/${ontologyRid}/objectTypes/`;
+const ontologyObjectType = `
+interface OntologyObject {
+  rid: string;
+  properties?: {
+    [key: string]: any;
+  };
+}
+`;
 
 for (const objectType of inputArgs.objectTypes) {
   try {
@@ -72,10 +87,13 @@ for (const objectType of inputArgs.objectTypes) {
           const interfaceOrType = `${inputArgs.type ? "type" : "interface"} ${
             respJson.apiName
           } ${inputArgs.type ? "= " : ""}`;
-          const opening = `\n${interfaceOrType}{`;
-          const rid = "\n  rid?: string;";
+          const opening = `\n${interfaceOrType}`;
+          const rid = "\n  rid: string;";
+          const extendsOntologyObject = !inputArgs.type && inputArgs.extendOntologyObject ? "extends OntologyObject" : "";
           const closing = "\n}";
-          const properties = `\n  properties?: {${Object.entries(respJson.properties)
+          const properties = `\n  properties?: {${Object.entries(
+            respJson.properties
+          )
             .map(
               ([propertyApiName, property]: [string, ObjectTypeProperty]) => {
                 if (property.baseType) {
@@ -101,7 +119,7 @@ for (const objectType of inputArgs.objectTypes) {
               }
             )
             .join("")}\n  };`;
-          return `${opening}${rid}${properties}${closing}`;
+          return `${inputArgs.extendOntologyObject ? `${ontologyObjectType}\n` : ""} ${opening}${extendsOntologyObject} {${rid}${properties}${closing}`;
         }
       })
       .then((typeDef) => console.log(typeDef));
