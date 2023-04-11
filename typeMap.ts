@@ -1,5 +1,5 @@
 export const typeMap = {
-  "Array<Attachment>": "string[]",
+  "Array<Attachment>": "{rid: string}[]",
   "Array<Boolean>": "boolean[]",
   "Array<Byte>": "Uint8Array[]",
   "Array<Date>": "Date[]",
@@ -12,7 +12,7 @@ export const typeMap = {
   "Array<Short>": "number[]",
   "Array<String>": "string[]",
   "Array<Timestamp>": "Date[]",
-  "Attachment": "string",
+  "Attachment": "{rid: string}",
   "Boolean": "boolean",
   "Byte": "Uint8Array",
   "Date": "Date",
@@ -22,6 +22,7 @@ export const typeMap = {
   "Integer": "number",
   "LocalDate": "Date",
   "Long": "number",
+  "Null": "null",
   "Short": "number",
   "String": "string",
   "Timestamp": "Date"
